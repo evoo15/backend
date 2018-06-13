@@ -18,6 +18,7 @@ class CreateProduitsTable extends Migration
             $table->string('label') ;
             $table->float('prix') ;
             $table->integer('quantite');
+            $table->timestamps();
         });
     }
 

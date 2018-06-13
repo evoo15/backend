@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use app\produit ;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,7 +16,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('produit', function(Request $request) {
-    $resp = produit::create($request->all());
-    return $resp;
-});
+Route::post('produit','produitController@store') ;
