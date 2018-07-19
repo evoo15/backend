@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,8 +31,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('produit','produitController@store') ;
-Route::post('adduser','UserController@store') ;
-Route::get('produits','produitController@index') ;
-Route::delete('produit{id}','produitController@destroy');
+Route::post('produit', 'ProductController@add');
+Route::post('adduser', 'UserController@add');
+Route::get('produits', 'ProductController@getAll');
+Route::delete('produit{id}', 'ProductController@delete');
+Route::get('produit/buy/{id}', 'ProductController@buy');
 

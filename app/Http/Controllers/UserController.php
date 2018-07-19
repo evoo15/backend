@@ -1,49 +1,35 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\User ;
+
+use App\Http\Repository\UserRepository;
 use Illuminate\Http\Request;
-use App\Repositories\Repository ;
 
 class UserController extends Controller
 {
-    protected $model;
+    protected $userRepository;
 
-    public function __construct(User $user)
+    function __construct(UserRepository $userRepository)
     {
-        // set the model
-        $this->model = new Repository($user);
+        $this->userRepository = $userRepository;
     }
 
-    public function index()
+    public function add(Request $request)
     {
-        return $this->model->all();
+        $user = $this->userRepository->add($request);
+        return response()->json($user);
     }
 
-    public function store(Request $request)
+    public function getAll()
     {
-        $request->merge([
-            'password' => bcrypt($request->input('password')),
-        ]);
-        return $this->model->create($request->only($this->model->getModel()->fillable));
+        return response()->json($this->userRepository->getAll());
     }
 
-    public function show($id)
+    public function delete($userId)
     {
-        return $this->model->show($id);
-    }
-
-    public function update(Request $request, $id)
-    {
-        // update model and only pass in the fillable fields
-        $this->model->update($request->only($this->model->getModel()->fillable), $id);
-
-        return $this->model->find($id);
-    }
-
-    public function destroy($id)
-    {
-        return $this->model->delete($id);
+        if (!$user = $this->userRepository->getById($userId)) {
+            return response()->json(['error' => 'user not found'], 404);
+        }
+        $this->userRepository->delete($user);
     }
 }
-
